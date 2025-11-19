@@ -13,10 +13,16 @@
 
         <div class="mb-3">
             <label>Kompetensi Keahlian</label>
-            <input type="text" name="kompetensi_keahlian" class="form-control">
+            <select name="kompetensi_keahlian" class="form-control">
+                <option value="">-- Pilih Kompetensi Keahlian --</option>
+                <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak</option>
+                <option value="Teknik Komputer Jaringan">Teknik Komputer dan Jaringan</option>
+                <option value="Teknik Elektronika Industri">Teknik Elektronika Industri</option>
+                <option value="Teknik Pendingin Tata Udara">Teknik Pendingin Dan Tata Udara</option>
+            </select>
         </div>
 
-        <button class="btn btn-success">Simpan</button>
+        <button class="btn btn-success" href="{{ route('admin.kelas.index') }}">Simpan</button>
     </form>
 </div>
 @endsection

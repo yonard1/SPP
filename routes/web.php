@@ -46,12 +46,72 @@ Route::middleware('auth.admin')->prefix('admin')->name('admin.')->group(function
     Route::resource('kelas', KelasController::class);
 
     // TRANSAKSI ADMIN (FULL)
-    Route::resource('transaksi', TransaksiAdmin::class);
-    Route::get('/transaksi/siswa/{nisn}', [TransaksiAdmin::class, 'getSiswaDetail'])
-        ->name('transaksi.siswa');
+    Route::resource('transaksi', TransaksiAdmin::class)->except(['create','show']);
 
-    // LAPORAN
-    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    // Create transaksi dengan NISN (wajib)
+    Route::get('/transaksi', [TransaksiAdmin::class, 'index'])->name('transaksi.index');
+
+    // Form pembayaran (HARUS pakai NISN)
+    Route::get('/transaksi/{nisn}/create', [TransaksiAdmin::class, 'create'])->name('transaksi.create');
+
+    // Proses simpan pembayaran
+    Route::post('/transaksi', [TransaksiAdmin::class, 'store'])->name('transaksi.store');
+
+    // History pembayaran
+    Route::get('/transaksi/{nisn}/history', [TransaksiAdmin::class, 'history'])->name('transaksi.history');
+
+    // =======================
+    // ADMIN LAPORAN ROUTES
+    // =======================
+     Route::prefix('laporan')->name('laporan.')->group(function () {
+
+        // Halaman utama laporan
+        Route::get('/', [LaporanController::class, 'index'])->name('index');
+
+        // --------------------- PEMBAYARAN ---------------------
+        // GET -> halaman laporan pembayaran (bisa dari URL / refresh)
+        Route::get('/pembayaran', [LaporanController::class, 'laporanPembayaran'])
+            ->name('pembayaran.get');
+
+        // POST -> form dari halaman index
+        Route::post('/pembayaran', [LaporanController::class, 'laporanPembayaran'])
+            ->name('pembayaran');
+
+        // PDF laporan pembayaran
+        Route::get('/pembayaran/pdf', [LaporanController::class, 'laporanPembayaranPdf'])
+            ->name('pembayaran.pdf');
+
+
+        // --------------------- PER SISWA ---------------------
+        Route::get('/siswa', [LaporanController::class, 'laporanPerSiswa'])
+            ->name('siswa.get');
+
+        Route::post('/siswa', [LaporanController::class, 'laporanPerSiswa'])
+            ->name('siswa');
+
+        Route::get('/siswa/pdf', [LaporanController::class, 'laporanPerSiswaPdf'])
+            ->name('per_siswa.pdf');
+
+
+        // --------------------- PER KELAS ---------------------
+        Route::get('/kelas', [LaporanController::class, 'laporanPerKelas'])
+            ->name('kelas.get');
+
+        Route::post('/kelas', [LaporanController::class, 'laporanPerKelas'])
+            ->name('kelas');
+
+        Route::get('/kelas/pdf', [LaporanController::class, 'laporanPerKelasPdf'])
+            ->name('per_kelas.pdf');
+
+
+        // --------------------- TUNGGAKAN ---------------------
+        Route::get('/tunggakan', [LaporanController::class, 'laporanTunggakan'])
+            ->name('tunggakan');
+
+        Route::get('/tunggakan/pdf', [LaporanController::class, 'laporanTunggakanPdf'])
+            ->name('tunggakan.pdf');
+
+    });
 });
 
 
@@ -80,6 +140,7 @@ Route::middleware('auth.petugas')->prefix('petugas')->name('petugas.')->group(fu
     Route::get('/transaksi/{nisn}/create', [TransaksiPetugas::class, 'create'])->name('transaksi.create');
     Route::post('/transaksi/store', [TransaksiPetugas::class, 'store'])->name('transaksi.store');
     Route::get('/transaksi/{nisn}/history', [TransaksiPetugas::class, 'history'])->name('transaksi.history');
+    
 });
 
 

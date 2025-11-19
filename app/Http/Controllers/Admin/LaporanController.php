@@ -7,7 +7,7 @@ use App\Models\Pembayaran;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
-use PDF; // Jika pakai barryvdh/laravel-dompdf
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class LaporanController extends Controller
 {
@@ -49,7 +49,7 @@ class LaporanController extends Controller
         $total = $pembayaran->sum('jumlah_bayar');
 
         $pdf = PDF::loadView('admin.laporan.pembayaran_pdf', compact('pembayaran', 'total', 'dari', 'sampai'));
-        return $pdf->download('laporan-pembayaran-'.$dari.'-'.$sampai.'.pdf');
+        return $pdf->download("laporan-pembayaran-{$dari}-{$sampai}.pdf");
     }
 
     public function laporanPerSiswa(Request $request)
@@ -66,9 +66,9 @@ class LaporanController extends Controller
 
         $total = $pembayaran->sum('jumlah_bayar');
 
-        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+        $bulan = ['Juli','Agustus','September','Oktober','November','Desember','Januari','Februari','Maret','April','Mei','Juni'];
         $bulan_lunas = $pembayaran->pluck('bulan_dibayar')->toArray();
-        
+
         $status_pembayaran = [];
         foreach ($bulan as $bln) {
             $status_pembayaran[$bln] = in_array($bln, $bulan_lunas);
@@ -87,16 +87,16 @@ class LaporanController extends Controller
 
         $total = $pembayaran->sum('jumlah_bayar');
 
-        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+        $bulan = ['Juli','Agustus','September','Oktober','November','Desember','Januari','Februari','Maret','April','Mei','Juni'];
         $bulan_lunas = $pembayaran->pluck('bulan_dibayar')->toArray();
-        
+
         $status_pembayaran = [];
         foreach ($bulan as $bln) {
             $status_pembayaran[$bln] = in_array($bln, $bulan_lunas);
         }
 
-        $pdf = PDF::loadView('admin.laporan.per_siswa_pdf', compact('siswa', 'pembayaran', 'total', 'status_pembayaran'));
-        return $pdf->download('laporan-siswa-'.$siswa->nisn.'.pdf');
+        $pdf = PDF::loadView('admin.laporan.per_siswa_pdf', compact('siswa','pembayaran','total','status_pembayaran'));
+        return $pdf->download("laporan-siswa-{$siswa->nisn}.pdf");
     }
 
     public function laporanPerKelas(Request $request)
@@ -112,12 +112,10 @@ class LaporanController extends Controller
 
         $data_siswa = [];
         foreach ($siswa as $s) {
-            $total_bayar = $s->pembayaran->sum('jumlah_bayar');
-            $bulan_lunas = $s->pembayaran->count();
             $data_siswa[] = [
                 'siswa' => $s,
-                'total_bayar' => $total_bayar,
-                'bulan_lunas' => $bulan_lunas
+                'total_bayar' => $s->pembayaran->sum('jumlah_bayar'),
+                'bulan_lunas' => $s->pembayaran->count()
             ];
         }
 
@@ -133,17 +131,15 @@ class LaporanController extends Controller
 
         $data_siswa = [];
         foreach ($siswa as $s) {
-            $total_bayar = $s->pembayaran->sum('jumlah_bayar');
-            $bulan_lunas = $s->pembayaran->count();
             $data_siswa[] = [
                 'siswa' => $s,
-                'total_bayar' => $total_bayar,
-                'bulan_lunas' => $bulan_lunas
+                'total_bayar' => $s->pembayaran->sum('jumlah_bayar'),
+                'bulan_lunas' => $s->pembayaran->count()
             ];
         }
 
-        $pdf = PDF::loadView('admin.laporan.per_kelas_pdf', compact('kelas', 'data_siswa'));
-        return $pdf->download('laporan-kelas-'.$kelas->nama_kelas.'.pdf');
+        $pdf = PDF::loadView('admin.laporan.per_kelas_pdf', compact('kelas','data_siswa'));
+        return $pdf->download("laporan-kelas-{$kelas->nama_kelas}.pdf");
     }
 
     public function laporanTunggakan()
@@ -154,14 +150,13 @@ class LaporanController extends Controller
         foreach ($siswa as $s) {
             $bulan_lunas = $s->pembayaran->count();
             $bulan_belum = 12 - $bulan_lunas;
-            $total_tunggakan = $bulan_belum * $s->spp->nominal;
 
             if ($bulan_belum > 0) {
                 $data_tunggakan[] = [
                     'siswa' => $s,
                     'bulan_lunas' => $bulan_lunas,
                     'bulan_belum' => $bulan_belum,
-                    'total_tunggakan' => $total_tunggakan
+                    'total_tunggakan' => $bulan_belum * $s->spp->nominal
                 ];
             }
         }
@@ -177,14 +172,13 @@ class LaporanController extends Controller
         foreach ($siswa as $s) {
             $bulan_lunas = $s->pembayaran->count();
             $bulan_belum = 12 - $bulan_lunas;
-            $total_tunggakan = $bulan_belum * $s->spp->nominal;
 
             if ($bulan_belum > 0) {
                 $data_tunggakan[] = [
                     'siswa' => $s,
                     'bulan_lunas' => $bulan_lunas,
                     'bulan_belum' => $bulan_belum,
-                    'total_tunggakan' => $total_tunggakan
+                    'total_tunggakan' => $bulan_belum * $s->spp->nominal
                 ];
             }
         }

@@ -42,10 +42,11 @@
                             </small>
                         </td>
                         <td>
-                            <a href="{{ route('petugas.transaksi.create', $item['siswa']->nisn) }}" class="btn btn-primary btn-sm">
+                            <a href="{{ route('admin.transaksi.create', $item['siswa']->nisn) }}" class="btn btn-primary btn-sm">
                                 💰 Bayar
                             </a>
-                            <a href="{{ route('petugas.transaksi.history', $item['siswa']->nisn) }}" class="btn btn-info btn-sm">
+
+                            <a href="{{ route('admin.transaksi.history', $item['siswa']->nisn) }}" class="btn btn-info btn-sm">
                                 📜 History
                             </a>
                         </td>

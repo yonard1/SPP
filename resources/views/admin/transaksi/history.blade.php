@@ -43,7 +43,7 @@
                     @forelse($pembayaran as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ date('d/m/Y H:i', strtotime($item->tgl_bayar)) }}</td>
+                        <td>{{ date('d/m/Y', strtotime($item->tgl_bayar)) }}</td>
                         <td>{{ $item->bulan_dibayar }}</td>
                         <td>{{ $item->tahun_dibayar }}</td>
                         <td>Rp {{ number_format($item->jumlah_bayar, 0, ',', '.') }}</td>

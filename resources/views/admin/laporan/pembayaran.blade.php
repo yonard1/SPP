@@ -1,55 +1,40 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Pembayaran</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-4">
-        <div class="text-center mb-4">
-            <h3>LAPORAN PEMBAYARAN SPP</h3>
-            <p>Periode: {{ date('d/m/Y', strtotime($dari)) }} - {{ date('d/m/Y', strtotime($sampai)) }}</p>
-        </div>
+@extends('layouts.app')
 
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>No</th>
-                    <th>Tanggal</th>
-                    <th>NISN</th>
-                    <th>Nama Siswa</th>
-                    <th>Kelas</th>
-                    <th>Bulan</th>
-                    <th>Jumlah</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($pembayaran as $item)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ date('d/m/Y', strtotime($item->tgl_bayar)) }}</td>
-                    <td>{{ $item->nisn }}</td>
-                    <td>{{ $item->siswa->nama }}</td>
-                    <td>{{ $item->siswa->kelas->nama_kelas }}</td>
-                    <td>{{ $item->bulan_dibayar }}</td>
-                    <td>Rp {{ number_format($item->jumlah_bayar, 0, ',', '.') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr class="table-secondary">
-                    <th colspan="6" class="text-end">TOTAL:</th>
-                    <th>Rp {{ number_format($total, 0, ',', '.') }}</th>
-                </tr>
-            </tfoot>
-        </table>
+@section('content')
+<div class="container">
+    <h3>Laporan Pembayaran</h3>
 
-        <div class="mt-4">
-            <button onclick="window.print()" class="btn btn-primary">🖨️ Print</button>
-            <button onclick="window.close()" class="btn btn-secondary">✖️ Tutup</button>
-        </div>
-    </div>
-</body>
-</html>
+    <p>Periode: <b>{{ $dari }}</b> sampai <b>{{ $sampai }}</b></p>
+
+    <a href="{{ route('admin.laporan.pembayaran.pdf', ['dari_tanggal' => $dari, 'sampai_tanggal' => $sampai]) }}" target="_blank" class="btn btn-danger mb-3">Download PDF</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tgl Bayar</th>
+                <th>NISN</th>
+                <th>Nama</th>
+                <th>Kelas</th>
+                <th>SPP</th>
+                <th>Jumlah</th>
+                <th>Petugas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($pembayaran as $p)
+            <tr>
+                <td>{{ $p->tgl_bayar }}</td>
+                <td>{{ $p->nisn }}</td>
+                <td>{{ $p->siswa->nama }}</td>
+                <td>{{ $p->siswa->kelas->nama_kelas }}</td>
+                <td>{{ $p->spp->nominal }}</td>
+                <td>{{ number_format($p->jumlah_bayar) }}</td>
+                <td>{{ $p->petugas->nama_petugas }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <h4>Total Pembayaran: Rp {{ number_format($total) }}</h4>
+</div>
+@endsection
