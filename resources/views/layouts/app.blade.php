@@ -1,152 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Aplikasi SPP' }}</title>
-
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-
+    <title>@yield('title') - Aplikasi SPP</title>
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            height: 100vh;
-            background: #f4f6f9;
-        }
-
-        /* NAVBAR */
-        nav.navbar-custom {
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 60px;
-            background: #007bff;
-            color: white;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            font-size: 18px;
-            z-index: 10;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            position: fixed;
-            top: 60px;
-            left: 0;
-            width: 230px;
-            height: calc(100vh - 60px);
-            background: #1f2937;
-            color: white;
-            padding-top: 20px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            padding: 12px 20px;
-            text-decoration: none;
-            font-size: 15px;
-        }
-
-        .sidebar a:hover {
-            background: #374151;
-        }
-
-        /* CONTENT */
-        .content {
-            margin-left: 230px;
-            margin-top: 60px;
-            padding: 25px;
-            width: calc(100% - 230px);
-        }
-
-        .logout-btn {
-            display: block;
-            margin: 20px;
-            padding: 10px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            width: 85%;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        
-        .logout-btn:hover {
-            opacity: 0.8;
-        }
+        .sidebar { min-height: calc(100vh - 56px); background-color: #f8f9fa; }
+        .list-group-item { border-radius: 0; border-left: 3px solid transparent; }
+        .list-group-item:hover { background-color: #e9ecef; border-left-color: #0d6efd; }
+        .list-group-item.active { background-color: #0d6efd; color: white; border-left-color: #0a58ca; }
     </style>
-
 </head>
 <body>
-
-    {{-- NAVBAR --}}
-    <nav class="navbar-custom">
-        <span class="fw-bold">Aplikasi SPP</span>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">🏫 Aplikasi SPP</a>
+            <div class="d-flex">
+                <span class="navbar-text text-white me-3">
+                    {{ session('nama') }} | <strong>{{ ucfirst(session('role')) }}</strong>
+                </span>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-sm">🚪 Logout</button>
+                </form>
+            </div>
+        </div>
     </nav>
 
-    {{-- SIDEBAR --}}
-    <div class="sidebar">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar p-0">
+                <div class="list-group list-group-flush">
+                    @if(session('role') == 'admin')
+                        <a href="{{ route('admin.dashboard') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            🏠 Dashboard
+                        </a>
 
-        {{-- ===================== --}}
-        {{-- ADMIN MENU --}}
-        {{-- ===================== --}}
-        @if(Auth::guard('petugas')->check() && Auth::guard('petugas')->user()->level === 'admin')
+                        <a href="{{ route('admin.transaksi.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('admin.transaksi.*') ? 'active' : '' }}">
+                            💰 Transaksi Pembayaran
+                        </a>
 
-            <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-            <a href="{{ route('admin.siswa.index') }}">Data Siswa</a>
-            <a href="{{ route('admin.petugas.index') }}">Data Petugas</a>
-            <a href="{{ route('admin.kelas.index') }}">Data Kelas</a>
-            <a href="{{ route('admin.spp.index') }}">Data SPP</a>
-            <a href="{{ route('admin.pembayaran.index') }}">Entri Pembayaran</a>
-            <a href="{{ route('admin.pembayaran.history') }}">History Pembayaran</a>
-            <a href="{{ route('admin.laporan.index') }}">Laporan</a>
+                        <a href="{{ route('admin.laporan.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('admin.laporan.*') ? 'active' : '' }}">
+                            📊 Laporan
+                        </a>
 
-        {{-- ===================== --}}
-        {{-- PETUGAS MENU --}}
-        {{-- ===================== --}}
-        @elseif(Auth::guard('petugas')->check() && Auth::guard('petugas')->user()->level === 'petugas')
+                        <a href="{{ route('admin.siswa.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('admin.siswa.*') ? 'active' : '' }}">
+                            👥 Data Siswa
+                        </a>
 
-            <a href="{{ route('petugas.dashboard') }}">Dashboard</a>
-            <a href="{{ route('petugas.pembayaran.index') }}">Entri Pembayaran</a>
-            <a href="{{ route('petugas.pembayaran.history') }}">History Pembayaran</a>
+                        <a href="{{ route('admin.petugas.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('admin.petugas.*') ? 'active' : '' }}">
+                            👔 Data Petugas
+                        </a>
 
-        {{-- ===================== --}}
-        {{-- SISWA MENU --}}
-        {{-- ===================== --}}
-        @elseif(Auth::guard('siswa')->check())
+                        <a href="{{ route('admin.kelas.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('admin.kelas.*') ? 'active' : '' }}">
+                            🏫 Data Kelas
+                        </a>
 
-            <a href="{{ route('siswa.dashboard') }}">Dashboard</a>
-            <a href="{{ route('siswa.history') }}">History Pembayaran</a>
+                        <a href="{{ route('admin.spp.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('admin.spp.*') ? 'active' : '' }}">
+                            💵 Data SPP
+                        </a>
 
-        {{-- ===================== --}}
-        {{-- GUEST MENU --}}
-        {{-- ===================== --}}
-        @else
+                    @elseif(session('role') == 'petugas')
 
-            <a href="{{ route('login') }}">Login</a>
+                        <a href="{{ route('petugas.dashboard') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('petugas.dashboard') ? 'active' : '' }}">
+                            🏠 Dashboard
+                        </a>
 
-        @endif
-
-        {{-- Logout --}}
-        @if (Auth::guard('petugas')->check() || Auth::guard('siswa')->check())
-            <form action="{{ route('logout') }}" method="GET">
-                <button class="logout-btn">Logout</button>
-            </form>
-        @endif
-    </div>
-
-    {{-- MAIN CONTENT --}}
-    <div class="content">
-        @yield('content')
+                        <a href="{{ route('petugas.transaksi.index') }}"
+                        class="list-group-item list-group-item-action {{ request()->routeIs('petugas.transaksi.*') ? 'active' : '' }}">
+                            💰 Transaksi Pembayaran
+                        </a>
+                    @else
+                        <a href="{{ route('siswa.dashboard') }}" class="list-group-item list-group-item-action {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}">
+                            🏠 Dashboard
+                        </a>
+                    @endif
+                </div>
+            </div>
+            <div class="col-md-10 p-4">
+                <h2 class="mb-3">@yield('title')</h2>
+                <hr>
+                @yield('content')
+            </div>
+        </div>
     </div>
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-
 </body>
 </html>

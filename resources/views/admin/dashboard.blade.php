@@ -3,59 +3,55 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
-<div class="container mt-4">
-    <h1 class="mb-4">Dashboard</h1>
-
-    <div class="row">
-        <!-- Total Siswa -->
-        <div class="col-md-3 mb-3">
-            <div class="card text-white bg-primary">
-                <div class="card-body">
-                    <h5 class="card-title">Total Siswa</h5>
-                    <p class="card-text fs-3">{{ $data['total_siswa'] }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Total Petugas -->
-        <div class="col-md-3 mb-3">
-            <div class="card text-white bg-success">
-                <div class="card-body">
-                    <h5 class="card-title">Total Petugas</h5>
-                    <p class="card-text fs-3">{{ $data['total_petugas'] }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Total Kelas -->
-        <div class="col-md-3 mb-3">
-            <div class="card text-white bg-warning">
-                <div class="card-body">
-                    <h5 class="card-title">Total Kelas</h5>
-                    <p class="card-text fs-3">{{ $data['total_kelas'] }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Total Pembayaran -->
-        <div class="col-md-3 mb-3">
-            <div class="card text-white bg-danger">
-                <div class="card-body">
-                    <h5 class="card-title">Total Pembayaran</h5>
-                    <p class="card-text fs-3">Rp{{ number_format($data['total_pembayaran'], 0, ',', '.') }}</p>
-                </div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5>Total Siswa</h5>
+                <h2>{{ $total_siswa }}</h2>
             </div>
         </div>
     </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5>Total Petugas</h5>
+                <h2>{{ $total_petugas }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h5>Total Kelas</h5>
+                <h2>{{ $total_kelas }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5>Total SPP</h5>
+                <h2>{{ $total_spp }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <!-- Pembayaran Bulan Ini -->
-    <div class="row mt-3">
-        <div class="col-md-6">
-            <div class="card text-white bg-info">
-                <div class="card-body">
-                    <h5 class="card-title">Pembayaran Bulan Ini</h5>
-                    <p class="card-text fs-3">Rp{{ number_format($data['pembayaran_bulan_ini'], 0, ',', '.') }}</p>
-                </div>
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5>Total Pembayaran</h5>
+                <h3>Rp {{ number_format($total_pembayaran, 0, ',', '.') }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5>Pembayaran Bulan Ini</h5>
+                <h3>Rp {{ number_format($pembayaran_bulan_ini, 0, ',', '.') }}</h3>
             </div>
         </div>
     </div>

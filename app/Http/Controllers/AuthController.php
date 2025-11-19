@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Petugas;
 use App\Models\Siswa;
 
 class AuthController extends Controller
 {
-    public function loginForm()
+    public function showLogin()
     {
         return view('auth.login');
     }
@@ -18,41 +17,40 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'identity' => 'required|string',
-            'password' => 'required|string|min:6',
+            'username' => 'required',
+            'password' => 'required'
         ]);
 
-        // LOGIN PETUGAS (username)
-        $petugas = Petugas::where('username', $request->identity)->first();
+        // Cek Petugas/Admin
+        $petugas = Petugas::where('username', $request->username)->first();
         if ($petugas && Hash::check($request->password, $petugas->password)) {
-            Auth::guard('petugas')->login($petugas);
-
-            return $petugas->level === 'admin'
-                ? redirect()->route('admin.dashboard')
-                : redirect()->route('petugas.dashboard');
+            session([
+                'logged_in' => true,
+                'role' => $petugas->level,
+                'id' => $petugas->id_petugas,
+                'nama' => $petugas->nama_petugas
+            ]);
+            return redirect()->route($petugas->level . '.dashboard');
         }
 
-        // LOGIN SISWA (NISN)
-        $siswa = Siswa::where('nisn', $request->identity)->first();
+        // Cek Siswa
+        $siswa = Siswa::where('nisn', $request->username)->orWhere('nis', $request->username)->first();
         if ($siswa && Hash::check($request->password, $siswa->password)) {
-            Auth::guard('siswa')->login($siswa);
+            session([
+                'logged_in' => true,
+                'role' => 'siswa',
+                'nisn' => $siswa->nisn,
+                'nama' => $siswa->nama
+            ]);
             return redirect()->route('siswa.dashboard');
         }
 
-        return back()->withErrors(['error' => 'Username/NISN atau password salah!'])->withInput();
+        return back()->with('error', 'Username atau password salah');
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
-        if (Auth::guard('petugas')->check()) {
-            Auth::guard('petugas')->logout();
-        } elseif (Auth::guard('siswa')->check()) {
-            Auth::guard('siswa')->logout();
-        }
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login');
+        session()->flush();
+        return redirect()->route('login')->with('success', 'Berhasil logout');
     }
 }
