@@ -9,15 +9,24 @@ use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $siswa = Siswa::with(['kelas', 'spp', 'pembayaran'])->get();
+        $search = $request->search;
+
+        $siswa = Siswa::with(['kelas', 'spp', 'pembayaran'])
+        ->when($search, function ($q) use ($search) {
+            $q->where('nama', 'like', "%$search%")
+              ->orWhere('nisn', 'like', "%$search%")
+              ->orWhereHas('kelas', function ($k) use ($search) {
+                $k->where('nama_kelas', 'like', "%$search%");
+            });
+        })->get();
 
         $data_siswa = [];
         foreach ($siswa as $s) {
             $bulan_lunas = $s->pembayaran->pluck('bulan_dibayar')->toArray();
             $bulan_semua = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
-            
+
             $status_bulan = [];
             foreach ($bulan_semua as $bulan) {
                 $status_bulan[$bulan] = in_array($bulan, $bulan_lunas);
@@ -37,7 +46,7 @@ class TransaksiController extends Controller
     public function create($nisn)
     {
         $siswa = Siswa::with(['kelas', 'spp'])->where('nisn', $nisn)->firstOrFail();
-        
+
         $bulan_semua = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
         $bulan_lunas = Pembayaran::where('nisn', $nisn)
             ->where('tahun_dibayar', date('Y'))
@@ -92,7 +101,7 @@ class TransaksiController extends Controller
         $pembayaran = Pembayaran::with('petugas')
             ->where('nisn', $nisn)
             ->orderBy('tgl_bayar', 'desc')
-            ->get();
+            ->paginate(10);
 
         return view('admin.transaksi.history', compact('siswa', 'pembayaran'));
     }
