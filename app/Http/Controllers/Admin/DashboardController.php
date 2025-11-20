@@ -18,7 +18,6 @@ class DashboardController extends Controller
             'total_petugas' => Petugas::count(),
             'total_kelas' => Kelas::count(),
             'total_spp' => Spp::count(),
-            'total_pembayaran' => Pembayaran::sum('jumlah_bayar'),
             'pembayaran_bulan_ini' => Pembayaran::whereMonth('tgl_bayar', date('m'))->sum('jumlah_bayar')
         ];
 

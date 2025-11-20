@@ -36,12 +36,12 @@
                         </form>
 
                         <hr class="my-4">
-                        <small class="text-muted d-block text-center">
+                        {{-- <small class="text-muted d-block text-center">
                             <strong>Demo Account:</strong><br>
                             Admin: admin / admin123<br>
                             Petugas: petugas1 / petugas123<br>
                             Siswa: 1234567890 / siswa123
-                        </small>
+                        </small> --}}
                     </div>
                 </div>
             </div>

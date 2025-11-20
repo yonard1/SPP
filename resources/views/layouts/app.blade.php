@@ -25,7 +25,7 @@
             src: url('/fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
             font-weight: 600;
         }
-        
+
         body {
             background: #f7f7fb;
             font-family: "Poppins", sans-serif;
@@ -195,10 +195,16 @@
                 </div>
             </a>
 
+            <a href="{{ route('admin.transaksi.global') }}">
+                <div class="menu-item {{ request()->routeIs('admin.transaksi.historyAll') ? 'active' : '' }}">
+                    <i data-lucide="history"></i> History Pembayaran
+                </div>
+            </a>
+
             <!-- LAPORAN -->
             <div class="menu-section-title">Laporan</div>
 
-            <a href="{{ route('admin.laporan.index') }}">
+            <a href="{{ route('admin.laporan.index')  }}">
                 <div class="menu-item {{ request()->routeIs('admin.laporan.*') ? 'active' : '' }}">
                     <i data-lucide="bar-chart-3"></i> Laporan Pembayaran
                 </div>
@@ -223,6 +229,12 @@
                 </div>
             </a>
 
+            {{-- <a href="{{ route('petugas.transaksi.history', session('id_petugas')) }}">
+                <div class="menu-item {{ request()->routeIs('petugas.transaksi.history') ? 'active' : '' }}">
+                    <i data-lucide="history"></i> History Transaksi Saya
+                </div>
+            </a> --}}
+
         @else
 
             <div class="menu-section-title">Main Menu</div>
@@ -232,6 +244,12 @@
                     <i data-lucide="home"></i> Dashboard
                 </div>
             </a>
+
+            {{-- <a href="{{ route('siswa.transaksi.index') }}">
+                <div class="menu-item {{ request()->routeIs('siswa.transaksi.*') ? 'active' : '' }}">
+                    <i data-lucide="history"></i> History Pembayaran
+                </div>
+            </a> --}}
 
         @endif
 

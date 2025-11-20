@@ -60,10 +60,13 @@ Route::middleware('auth.admin')->prefix('admin')->name('admin.')->group(function
     // History pembayaran
     Route::get('/transaksi/{nisn}/history', [TransaksiAdmin::class, 'history'])->name('transaksi.history');
 
+    Route::get('/transaksi/global', [TransaksiAdmin::class, 'globalHistory'])
+    ->name('transaksi.global');
+
     // =======================
     // ADMIN LAPORAN ROUTES
     // =======================
-     Route::prefix('laporan')->name('laporan.')->group(function () {
+    Route::prefix('laporan')->name('laporan.')->group(function () {
 
         // Halaman utama laporan
         Route::get('/', [LaporanController::class, 'index'])->name('index');
@@ -140,7 +143,7 @@ Route::middleware('auth.petugas')->prefix('petugas')->name('petugas.')->group(fu
     Route::get('/transaksi/{nisn}/create', [TransaksiPetugas::class, 'create'])->name('transaksi.create');
     Route::post('/transaksi/store', [TransaksiPetugas::class, 'store'])->name('transaksi.store');
     Route::get('/transaksi/{nisn}/history', [TransaksiPetugas::class, 'history'])->name('transaksi.history');
-    
+
 });
 
 
@@ -157,4 +160,5 @@ Route::middleware('auth.siswa')->prefix('siswa')->name('siswa.')->group(function
     // SISWA cuma bisa lihat pembayaran dia sendiri
     Route::get('/transaksi', [TransaksiPetugas::class, 'index'])->name('transaksi.index');
     Route::get('/transaksi/{nisn}', [TransaksiPetugas::class, 'show'])->name('transaksi.show');
+    Route::get('/transaksi/history', [TransaksiPetugas::class, 'historySiswa'])->name('transaksi.history');
 });

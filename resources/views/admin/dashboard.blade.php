@@ -42,14 +42,6 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h5>Total Pembayaran</h5>
-                <h3>Rp {{ number_format($total_pembayaran, 0, ',', '.') }}</h3>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
                 <h5>Pembayaran Bulan Ini</h5>
                 <h3>Rp {{ number_format($pembayaran_bulan_ini, 0, ',', '.') }}</h3>
             </div>

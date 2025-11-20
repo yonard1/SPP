@@ -107,4 +107,20 @@ class TransaksiController extends Controller
 
         return view('petugas.transaksi.history', compact('siswa', 'pembayaran'));
     }
+
+    public function historySiswa()
+    {
+        $nisn = auth()->user()->nisn;
+
+        $siswa = Siswa::with(['kelas', 'spp'])
+            ->where('nisn', $nisn)
+            ->firstOrFail();
+
+        $pembayaran = Pembayaran::with('petugas')
+            ->where('nisn', $nisn)
+            ->orderBy('tgl_bayar', 'desc')
+            ->get();
+
+        return view('siswa.transaksi.history', compact('siswa', 'pembayaran'));
+    }
 }

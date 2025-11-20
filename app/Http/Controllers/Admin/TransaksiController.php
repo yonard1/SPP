@@ -102,7 +102,29 @@ class TransaksiController extends Controller
             ->where('nisn', $nisn)
             ->orderBy('tgl_bayar', 'desc')
             ->paginate(10);
-
+        
         return view('admin.transaksi.history', compact('siswa', 'pembayaran'));
+    }
+    public function globalHistory(Request $request)
+    {
+        $search = $request->search;
+        $tanggal = $request->tanggal;
+
+        $pembayaran = Pembayaran::with(['siswa', 'petugas'])
+            ->when($search, function ($q) use ($search) {
+                $q->whereHas('siswa', function ($s) use ($search) {
+                    $s->where('nama', 'like', "%$search%");
+                })
+                ->orWhereHas('petugas', function ($p) use ($search) {
+                    $p->where('nama_petugas', 'like', "%$search%");
+                });
+            })
+            ->when($tanggal, function ($q) use ($tanggal) {
+                $q->whereDate('tgl_bayar', $tanggal);
+            })
+            ->orderBy('tgl_bayar', 'desc')
+            ->paginate(10);
+
+        return view('admin.transaksi.global', compact('pembayaran'));
     }
 }
