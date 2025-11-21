@@ -47,38 +47,4 @@
         </div>
     </div>
 </div>
-
-<div class="row mt-4">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h5>History Pembayaran</h5>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Bulan Dibayar</th>
-                            <th>Tahun</th>
-                            <th>Jumlah</th>
-                            <th>Petugas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($history as $h)
-                        <tr>
-                            <td>{{ date('d/m/Y', strtotime($h->tgl_bayar)) }}</td>
-                            <td>{{ $h->bulan_dibayar }}</td>
-                            <td>{{ $h->tahun_dibayar }}</td>
-                            <td>Rp {{ number_format($h->jumlah_bayar, 0, ',', '.') }}</td>
-                            <td>{{ $h->petugas->nama_petugas }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection

@@ -8,7 +8,6 @@
     {{-- Filter --}}
     <form method="GET" class="mb-4 d-flex gap-2">
         <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Cari nama siswa / kasir...">
-
         <input type="date" name="tanggal" value="{{ request('tanggal') }}" class="form-control">
 
         <button class="btn btn-primary">Cari</button>
@@ -30,6 +29,7 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse ($pembayaran as $i => $p)
                     <tr>
@@ -39,19 +39,15 @@
                         <td>{{ $p->siswa->nama }}</td>
                         <td>{{ $p->bulan_dibayar }} {{ $p->tahun_dibayar }}</td>
                         <td>Rp {{ number_format($p->jumlah_bayar, 0, ',', '.') }}</td>
-                        <td>
-                            <a href="{{ route('admin.transaksi.history', $p->nisn) }}"
-                               class="btn btn-info btn-sm">Detail</a>
-                        </td>
+                        <td><a href="{{ route('admin.transaksi.history', $p->nisn) }}" class="btn btn-info btn-sm">Detail</a></td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center py-3">
-                            Tidak ada transaksi.
-                        </td>
+                        <td colspan="7" class="text-center py-3">Tidak ada transaksi.</td>
                     </tr>
                     @endforelse
                 </tbody>
+
             </table>
         </div>
     </div>

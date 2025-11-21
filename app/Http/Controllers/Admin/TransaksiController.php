@@ -102,27 +102,33 @@ class TransaksiController extends Controller
             ->where('nisn', $nisn)
             ->orderBy('tgl_bayar', 'desc')
             ->paginate(10);
-        
+
         return view('admin.transaksi.history', compact('siswa', 'pembayaran'));
     }
+
     public function globalHistory(Request $request)
     {
         $search = $request->search;
         $tanggal = $request->tanggal;
 
+        // Subquery untuk ambil id_pembayaran terbaru per siswa
+        $sub = Pembayaran::selectRaw('MAX(id_pembayaran) as id_pembayaran')
+            ->groupBy('nisn');
+
+        // Query utama ambil data lengkap
         $pembayaran = Pembayaran::with(['siswa', 'petugas'])
+            ->whereIn('id_pembayaran', $sub)
             ->when($search, function ($q) use ($search) {
-                $q->whereHas('siswa', function ($s) use ($search) {
-                    $s->where('nama', 'like', "%$search%");
-                })
-                ->orWhereHas('petugas', function ($p) use ($search) {
-                    $p->where('nama_petugas', 'like', "%$search%");
+                $q->whereHas('siswa', function ($qq) use ($search) {
+                    $qq->where('nama', 'LIKE', "%$search%");
+                })->orWhereHas('petugas', function ($qq) use ($search) {
+                    $qq->where('nama_petugas', 'LIKE', "%$search%");
                 });
             })
             ->when($tanggal, function ($q) use ($tanggal) {
                 $q->whereDate('tgl_bayar', $tanggal);
             })
-            ->orderBy('tgl_bayar', 'desc')
+            ->latest()
             ->paginate(10);
 
         return view('admin.transaksi.global', compact('pembayaran'));

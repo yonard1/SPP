@@ -2,8 +2,6 @@
 @section('title', 'Laporan Pembayaran')
 @section('content')
 <div class="container">
-    <h2>Laporan Pembayaran</h2>
-
     <div class="row">
 
         {{-- Laporan per kelas --}}

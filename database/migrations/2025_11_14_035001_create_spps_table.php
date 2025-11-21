@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('spps', function (Blueprint $table) {
-            $table->integer('id_spp')->autoIncrement();
+            $table->unsignedInteger('id_spp')->autoIncrement();
             $table->integer('tahun');
             $table->integer('nominal');
             $table->timestamps();

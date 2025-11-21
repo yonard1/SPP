@@ -12,13 +12,13 @@ class DashboardController extends Controller
     {
         $nisn = session('nisn');
         $siswa = Siswa::with(['kelas', 'spp'])->where('nisn', $nisn)->first();
-        
+
         $bulan_lunas = Pembayaran::where('nisn', $nisn)
             ->pluck('bulan_dibayar')
             ->toArray();
 
         $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
-        
+
         $status_pembayaran = [];
         foreach ($bulan as $bln) {
             $status_pembayaran[$bln] = in_array($bln, $bulan_lunas) ? 'Lunas' : 'Belum Bayar';

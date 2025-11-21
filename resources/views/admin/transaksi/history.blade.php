@@ -64,7 +64,7 @@
             </table>
         </div>
 
-        <a href="{{ route('admin.transaksi.index') }}" class="btn btn-secondary">↩️ Kembali</a>
+        <a href="{{ route('admin.transaksi.global') }}" class="btn btn-secondary">↩️ Kembali</a>
         <a href="{{ route('admin.transaksi.create', $siswa->nisn) }}" class="btn btn-primary">💰 Bayar Lagi</a>
     </div>
 </div>

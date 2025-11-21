@@ -3,11 +3,28 @@
 @section('content')
 <style>
 .bulan-grid {
-        display: grid;
-        grid-template-columns: repeat(6, auto); /* 6 kolom */
-        gap: 4px;
-        align-items: center;
-    }
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    gap: 4px;
+    align-items: center;
+}
+
+/* Bikin tabel lebih gede & tulisan lebih nyaman */
+.table-container {
+    max-width: 1200px; 
+    width: 100%; 
+    margin: auto; 
+}
+
+.table td, .table th {
+    padding: 10px !important; /* Perbesar padding */
+    font-size: 15px; /* Perbesar tulisan */
+}
+
+.badge {
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+}
 </style>
 
 <h3 class="mb-4">📊 Data Pembayaran SPP Siswa</h3>
@@ -23,16 +40,16 @@
 
 {{-- Tabel --}}
 <div class="table-responsive d-flex justify-content-center">
-    <div style="max-width: 900px; width: 100%;"> 
+    <div class="table-container"> 
         <table class="table table-bordered table-striped table-hover table-sm">
             <thead class="table-dark">
                 <tr>
-                    <th>No</th>
-                    <th>NISN</th>
-                    <th>Nama</th>
-                    <th>Kelas</th>
+                    <th style="width: 50px;">No</th>
+                    <th style="width: 120px;">NISN</th>
+                    <th style="width: 200px;">Nama</th>
+                    <th style="width: 150px;">Kelas</th>
                     <th>Status Pembayaran (12 Bulan)</th>
-                    <th>Aksi</th>
+                    <th style="width: 100px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,18 +71,13 @@
                                 @endforeach
                             </div>
 
-                            <small class="text-muted">
+                            <small class="text-muted d-block mt-1">
                                 Lunas: {{ $item['total_lunas'] }} | Belum: {{ $item['total_belum'] }}
                             </small>
                         </div>
-                        <small class="text-muted">
-                            Lunas: {{ $item['total_lunas'] }} | Belum: {{ $item['total_belum'] }}
-                        </small>
                     </td>
                     <td>
                         <a href="{{ route('admin.transaksi.create', $item['siswa']->nisn) }}" class="btn btn-primary btn-sm">💰 Bayar</a>
-
-                        <a href="{{ route('admin.transaksi.history', $item['siswa']->nisn) }}" class="btn btn-info btn-sm">📜 History</a>
                     </td>
                 </tr>
                 @empty
@@ -77,6 +89,5 @@
         </table>
     </div>
 </div>
-
 
 @endsection

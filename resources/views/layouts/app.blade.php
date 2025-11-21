@@ -9,17 +9,14 @@
     <!-- Bootstrap -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Custom Styles -->
+    <!-- STYLE -->
     <style>
-
         @font-face {
             font-family: 'Poppins';
             src: url('/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
             font-weight: 400;
         }
+
         @font-face {
             font-family: 'Poppins';
             src: url('/fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
@@ -29,6 +26,21 @@
         body {
             background: #f7f7fb;
             font-family: "Poppins", sans-serif;
+            margin: 0; /* penting */
+            padding: 0; /* penting */
+        }
+
+        /* ICON AUTO COLOR */
+        .icon-sm {
+            width: 18px;
+            height: 18px;
+            filter: brightness(0) saturate(100%);
+            transition: .25s;
+        }
+
+        .menu-item:hover .icon-sm,
+        .menu-item.active .icon-sm {
+            filter: invert(22%) sepia(95%) saturate(7500%) hue-rotate(258deg) brightness(88%) contrast(102%);
         }
 
         /* TOPBAR */
@@ -36,8 +48,11 @@
             background: #fff;
             padding: 14px 24px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 240px; /* topbar dimulai setelah sidebar */
+            width: calc(100% - 240px); /* sisanya layar */
+            height: 60px;
             z-index: 50;
             display: flex;
             justify-content: space-between;
@@ -54,16 +69,38 @@
         .sidebar {
             width: 240px;
             background: #fff;
-            height: 100vh;
             position: fixed;
-            top: 60px;
+            top: 0; /* sekarang mentok atas */
             left: 0;
+            height: 100vh; /* full height */
             border-right: 1px solid #eee;
-            padding-top: 10px;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar a{
+        .sidebar-logo {
+            height: 90px;
+            min-height: 90px;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo-img {
+            max-height: 55px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        .sidebar a {
             text-decoration: none;
             display: block;
         }
@@ -104,6 +141,7 @@
         /* CONTENT */
         .content-wrapper {
             margin-left: 260px;
+            margin-top: 80px;
             padding: 30px;
         }
 
@@ -112,13 +150,11 @@
             color: #333;
         }
 
-        /* BUTTONS */
         .btn-indigo {
             background: #5b23e7;
             color: #fff;
             border-radius: 10px;
             padding: 8px 18px;
-            border: none;
         }
 
         .btn-indigo:hover {
@@ -128,6 +164,112 @@
 </head>
 
 <body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <img src="{{ asset('images/logo.png') }}" class="logo-img">
+        </div>
+
+        <div class="sidebar-menu">
+            @if(session('role') === 'admin')
+                <div class="menu-section-title">Main Menu</div>
+
+                <a href="{{ route('admin.dashboard') }}">
+                    <div class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/home.svg') }}" class="icon-sm"> Dashboard
+                    </div>
+                </a>
+
+                <div class="menu-section-title">Master Data</div>
+
+                <a href="{{ route('admin.siswa.index') }}">
+                    <div class="menu-item {{ request()->routeIs('admin.siswa.*') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/users.svg') }}" class="icon-sm"> Data Siswa
+                    </div>
+                </a>
+
+                <a href="{{ route('admin.petugas.index') }}">
+                    <div class="menu-item {{ request()->routeIs('admin.petugas.*') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/badge-check.svg') }}" class="icon-sm"> Data Petugas
+                    </div>
+                </a>
+
+                <a href="{{ route('admin.kelas.index') }}">
+                    <div class="menu-item {{ request()->routeIs('admin.kelas.*') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/school.svg') }}" class="icon-sm"> Data Kelas
+                    </div>
+                </a>
+
+                <a href="{{ route('admin.spp.index') }}">
+                    <div class="menu-item {{ request()->routeIs('admin.spp.*') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/receipt.svg') }}" class="icon-sm"> Data SPP
+                    </div>
+                </a>
+
+                <div class="menu-section-title">Transaksi</div>
+
+                <a href="{{ route('admin.transaksi.index') }}">
+                    <div class="menu-item {{ request()->routeIs('admin.transaksi.*') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/wallet.svg') }}" class="icon-sm"> Pembayaran
+                    </div>
+                </a>
+
+                <a href="{{ route('admin.transaksi.global') }}">
+                    <div class="menu-item {{ request()->routeIs('admin.transaksi.global') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/history.svg') }}" class="icon-sm"> History Pembayaran
+                    </div>
+                </a>
+
+                <div class="menu-section-title">Laporan</div>
+
+                <a href="{{ route('admin.laporan.index') }}">
+                    <div class="menu-item {{ request()->routeIs('admin.laporan.*') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/bar-chart-3.svg') }}" class="icon-sm"> Laporan Pembayaran
+                    </div>
+                </a>
+            @endif
+
+            @if(session('role') === 'petugas')
+                <div class="menu-section-title">Menu Petugas</div>
+
+                <a href="{{ route('petugas.dashboard') }}">
+                    <div class="menu-item {{ request()->routeIs('petugas.dashboard') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/home.svg') }}" class="icon-sm"> Dashboard
+                    </div>
+                </a>
+
+                <a href="{{ route('petugas.transaksi.index') }}">
+                    <div class="menu-item {{ request()->routeIs('petugas.transaksi.*') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/wallet.svg') }}" class="icon-sm"> Pembayaran
+                    </div>
+                </a>
+
+                <a href="{{ route('petugas.transaksi.history.petugas') }}">
+                    <div class="menu-item {{ request()->routeIs('petugas.transaksi.*') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/history.svg') }}" class="icon-sm"> History
+                    </div>
+                </a>
+            @endif
+
+            @if(session('role') === 'siswa')
+                <div class="menu-section-title">Menu Siswa</div>
+
+                <a href="{{ route('siswa.dashboard') }}">
+                    <div class="menu-item {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/home.svg') }}" class="icon-sm"> Dashboard
+                    </div>
+                </a>
+
+                <a href="{{ route('siswa.transaksi.history') }}">
+                    <div class="menu-item {{ request()->routeIs('siswa.history') ? 'active' : '' }}">
+                        <img src="{{ asset('icons/history.svg') }}" class="icon-sm"> History Pembayaran
+                    </div>
+                </a>
+            @endif
+
+        </div>
+    </div>
 
     <!-- TOPBAR -->
     <div class="topbar">
@@ -139,120 +281,10 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button class="btn btn-danger btn-sm d-flex align-items-center gap-1">
-                    <i data-lucide="log-out"></i> Logout
+                    <img src="{{ asset('icons/log-out.svg') }}" class="icon-sm"> Logout
                 </button>
             </form>
         </div>
-    </div>
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-
-        @if(session('role') == 'admin')
-
-            <!-- MAIN -->
-            <div class="menu-section-title">Main Menu</div>
-
-            <a href="{{ route('admin.dashboard') }}">
-                <div class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <i data-lucide="home"></i> Dashboard
-                </div>
-            </a>
-
-            <!-- MASTER DATA -->
-            <div class="menu-section-title">Master Data</div>
-
-            <a href="{{ route('admin.siswa.index') }}">
-                <div class="menu-item {{ request()->routeIs('admin.siswa.*') ? 'active' : '' }}">
-                    <i data-lucide="users"></i> Data Siswa
-                </div>
-            </a>
-
-            <a href="{{ route('admin.petugas.index') }}">
-                <div class="menu-item {{ request()->routeIs('admin.petugas.*') ? 'active' : '' }}">
-                    <i data-lucide="badge-check"></i> Data Petugas
-                </div>
-            </a>
-
-            <a href="{{ route('admin.kelas.index') }}">
-                <div class="menu-item {{ request()->routeIs('admin.kelas.*') ? 'active' : '' }}">
-                    <i data-lucide="school"></i> Data Kelas
-                </div>
-            </a>
-
-            <a href="{{ route('admin.spp.index') }}">
-                <div class="menu-item {{ request()->routeIs('admin.spp.*') ? 'active' : '' }}">
-                    <i data-lucide="receipt"></i> Data SPP
-                </div>
-            </a>
-
-            <!-- TRANSAKSI -->
-            <div class="menu-section-title">Transaksi</div>
-
-            <a href="{{ route('admin.transaksi.index') }}">
-                <div class="menu-item {{ request()->routeIs('admin.transaksi.*') ? 'active' : '' }}">
-                    <i data-lucide="wallet"></i> Pembayaran
-                </div>
-            </a>
-
-            <a href="{{ route('admin.transaksi.global') }}">
-                <div class="menu-item {{ request()->routeIs('admin.transaksi.historyAll') ? 'active' : '' }}">
-                    <i data-lucide="history"></i> History Pembayaran
-                </div>
-            </a>
-
-            <!-- LAPORAN -->
-            <div class="menu-section-title">Laporan</div>
-
-            <a href="{{ route('admin.laporan.index')  }}">
-                <div class="menu-item {{ request()->routeIs('admin.laporan.*') ? 'active' : '' }}">
-                    <i data-lucide="bar-chart-3"></i> Laporan Pembayaran
-                </div>
-            </a>
-
-
-        @elseif(session('role') == 'petugas')
-
-            <div class="menu-section-title">Main Menu</div>
-
-            <a href="{{ route('petugas.dashboard') }}">
-                <div class="menu-item {{ request()->routeIs('petugas.dashboard') ? 'active' : '' }}">
-                    <i data-lucide="home"></i> Dashboard
-                </div>
-            </a>
-
-            <div class="menu-section-title">Transaksi</div>
-
-            <a href="{{ route('petugas.transaksi.index') }}">
-                <div class="menu-item {{ request()->routeIs('petugas.transaksi.*') ? 'active' : '' }}">
-                    <i data-lucide="wallet"></i> Pembayaran
-                </div>
-            </a>
-
-            {{-- <a href="{{ route('petugas.transaksi.history', session('id_petugas')) }}">
-                <div class="menu-item {{ request()->routeIs('petugas.transaksi.history') ? 'active' : '' }}">
-                    <i data-lucide="history"></i> History Transaksi Saya
-                </div>
-            </a> --}}
-
-        @else
-
-            <div class="menu-section-title">Main Menu</div>
-
-            <a href="{{ route('siswa.dashboard') }}">
-                <div class="menu-item {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}">
-                    <i data-lucide="home"></i> Dashboard
-                </div>
-            </a>
-
-            {{-- <a href="{{ route('siswa.transaksi.index') }}">
-                <div class="menu-item {{ request()->routeIs('siswa.transaksi.*') ? 'active' : '' }}">
-                    <i data-lucide="history"></i> History Pembayaran
-                </div>
-            </a> --}}
-
-        @endif
-
     </div>
 
     <!-- CONTENT -->
@@ -262,11 +294,6 @@
     </div>
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Lucide Init -->
-    <script>
-        lucide.createIcons();
-    </script>
 
 </body>
 

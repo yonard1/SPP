@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('no_telp', 13);
             $table->string('password');
-            $table->integer('id_spp');
+            $table->unsignedInteger('id_spp');
             $table->timestamps();
 
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');

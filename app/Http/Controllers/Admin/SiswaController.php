@@ -59,13 +59,13 @@ class SiswaController extends Controller
         $siswa = Siswa::findOrFail($id);
 
         $request->validate([
-            'nisn' => 'required|unique:siswa,nisn,' . $id . ',id_siswa',
-            'nis' => 'required|unique:siswa,nis,' . $id . ',id_siswa',
+            'nisn' => 'required|unique:siswas,nisn,' . $id . ',nisn',
+            'nis' => 'required|unique:siswas,nis,' . $id . ',nisn',
             'nama' => 'required',
             'id_kelas' => 'required|exists:kelas,id_kelas',
             'alamat' => 'required',
             'no_telp' => 'required',
-            'id_spp' => 'required|exists:spp,id_spp'
+            'id_spp' => 'required|exists:spps,id_spp'
         ]);
 
         $data = $request->except('password');

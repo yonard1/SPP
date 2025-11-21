@@ -18,14 +18,14 @@ return new class extends Migration
             $table->date('tgl_bayar');
             $table->string('bulan_dibayar', 10);
             $table->string('tahun_dibayar', 4);
-            $table->integer('id_spp');
+            $table->unsignedInteger('id_spp');
             $table->integer('jumlah_bayar');
 
             $table->timestamps();
 
-            $table->foreign('id_petugas')->references('id_petugas')->on('petugas')->onDelete('cascade');
             $table->foreign('nisn')->references('nisn')->on('siswas')->onDelete('cascade');
-            $table->foreign('id_spp')->references('id_spp')->on('spps')->onDelete('cascade');
+            $table->foreign('id_spp')->references('id_spp')->on('spps')->onDelete('cascade');;
+            $table->foreign('id_petugas')->references('id_petugas')->on('petugas')->onDelete('cascade');
         });
     }
 

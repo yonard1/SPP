@@ -96,31 +96,37 @@ class TransaksiController extends Controller
             ->with('success', 'Pembayaran bulan '.$request->bulan_dibayar.' berhasil ditambahkan');
     }
 
-    public function history($nisn)
+    public function history()
     {
-        $siswa = Siswa::with(['kelas', 'spp'])->where('nisn', $nisn)->firstOrFail();
+        // gunakan session('id') jika kamu menyimpan id petugas di session seperti create()
+        $idPetugas = session('id');
 
-        $pembayaran = Pembayaran::with('petugas')
-            ->where('nisn', $nisn)
+        // kalau pakai auth: $idPetugas = auth()->id();
+
+        $pembayaran = Pembayaran::with(['petugas', 'siswa.kelas', 'siswa.spp'])
+            ->where('id_petugas', $idPetugas)
             ->orderBy('tgl_bayar', 'desc')
             ->get();
 
-        return view('petugas.transaksi.history', compact('siswa', 'pembayaran'));
+        return view('petugas.transaksi.history', compact('pembayaran'));
     }
 
-    public function historySiswa()
+    public function show($id)
     {
-        $nisn = auth()->user()->nisn;
-
-        $siswa = Siswa::with(['kelas', 'spp'])
-            ->where('nisn', $nisn)
+        // ambil payment by id
+        $pembayaran = Pembayaran::with(['petugas', 'siswa.kelas', 'siswa.spp'])
+            ->where('id', $id)
             ->firstOrFail();
 
-        $pembayaran = Pembayaran::with('petugas')
-            ->where('nisn', $nisn)
-            ->orderBy('tgl_bayar', 'desc')
-            ->get();
+        // cek agar petugas hanya bisa melihat transaksi yang dia lakukan
+        $idPetugas = session('id'); // atau auth()->id()
+        if ($pembayaran->id_petugas != $idPetugas) {
+            abort(403, 'Anda tidak berhak melihat transaksi ini.');
+        }
 
-        return view('siswa.transaksi.history', compact('siswa', 'pembayaran'));
+        // kalau view membutuhkan $siswa, kirim juga
+        $siswa = $pembayaran->siswa;
+
+        return view('petugas.transaksi.show', compact('pembayaran', 'siswa'));
     }
 }
