@@ -209,15 +209,17 @@
 
                 <div class="menu-section-title">Transaksi</div>
 
+                {{-- PEMBAYARAN --}}
                 <a href="{{ route('admin.transaksi.index') }}">
-                    <div class="menu-item {{ request()->routeIs('admin.transaksi.*') ? 'active' : '' }}">
+                    <div class="menu-item {{ request()->routeIs('admin.transaksi.index') ? 'active' : '' }}">
                         <img src="{{ asset('icons/wallet.svg') }}" class="icon-sm"> Pembayaran
                     </div>
                 </a>
 
+                {{-- HISTORY --}}
                 <a href="{{ route('admin.transaksi.global') }}">
                     <div class="menu-item {{ request()->routeIs('admin.transaksi.global') ? 'active' : '' }}">
-                        <img src="{{ asset('icons/history.svg') }}" class="icon-sm"> History Pembayaran
+                        <img src="{{ asset('icons/history.svg') }}" class="icon-sm"> History
                     </div>
                 </a>
 
@@ -240,13 +242,13 @@
                 </a>
 
                 <a href="{{ route('petugas.transaksi.index') }}">
-                    <div class="menu-item {{ request()->routeIs('petugas.transaksi.*') ? 'active' : '' }}">
+                    <div class="menu-item {{ request()->routeIs('petugas.transaksi.index') ? 'active' : '' }}">
                         <img src="{{ asset('icons/wallet.svg') }}" class="icon-sm"> Pembayaran
                     </div>
                 </a>
 
                 <a href="{{ route('petugas.transaksi.history.petugas') }}">
-                    <div class="menu-item {{ request()->routeIs('petugas.transaksi.*') ? 'active' : '' }}">
+                    <div class="menu-item {{ request()->routeIs('petugas.transaksi.history.petugas') ? 'active' : '' }}">
                         <img src="{{ asset('icons/history.svg') }}" class="icon-sm"> History
                     </div>
                 </a>
@@ -262,7 +264,7 @@
                 </a>
 
                 <a href="{{ route('siswa.transaksi.history') }}">
-                    <div class="menu-item {{ request()->routeIs('siswa.history') ? 'active' : '' }}">
+                    <div class="menu-item {{ request()->routeIs('siswa.transaksi.history') ? 'active' : '' }}">
                         <img src="{{ asset('icons/history.svg') }}" class="icon-sm"> History Pembayaran
                     </div>
                 </a>

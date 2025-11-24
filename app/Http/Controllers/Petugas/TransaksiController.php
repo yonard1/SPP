@@ -115,7 +115,7 @@ class TransaksiController extends Controller
     {
         // ambil payment by id
         $pembayaran = Pembayaran::with(['petugas', 'siswa.kelas', 'siswa.spp'])
-            ->where('id', $id)
+            ->where('id_pembayaran', $id)
             ->firstOrFail();
 
         // cek agar petugas hanya bisa melihat transaksi yang dia lakukan

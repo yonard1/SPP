@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Petugas;
 use App\Models\Siswa;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -48,9 +49,13 @@ class AuthController extends Controller
         return back()->with('error', 'Username atau password salah');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->flush();
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('login')->with('success', 'Berhasil logout');
     }
 }

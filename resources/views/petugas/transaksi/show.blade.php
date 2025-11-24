@@ -4,7 +4,7 @@
 <div class="container">
     <h3>Detail Transaksi</h3>
 
-    <a href="{{ route('transaksi.history.petugas') }}" class="btn btn-secondary mb-3">Kembali</a>
+    <a href="{{ route('petugas.transaksi.history.petugas') }}" class="btn btn-secondary mb-3">Kembali</a>
 
     <div class="card">
         <div class="card-body">
