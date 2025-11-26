@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'History Siswa')
 @section('content')
 <div class="container mt-4">
 
@@ -14,6 +14,7 @@
                 <th>Bulan</th>
                 <th>Tahun</th>
                 <th>Jumlah</th>
+                <th>Petugas</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +25,7 @@
                 <td>{{ $p->bulan_dibayar }}</td>
                 <td>{{ $p->tahun_dibayar }}</td>
                 <td>Rp {{ number_format($p->jumlah_bayar,0,',','.') }}</td>
-                
+                <td>{{ $p->petugas->nama_petugas }}</td>
             </tr>
             @endforeach
         </tbody>

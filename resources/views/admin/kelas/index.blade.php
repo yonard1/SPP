@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'CRUD Kelas')
 @section('content')
 <div class="container mt-4">
     <h3>Data Kelas</h3>

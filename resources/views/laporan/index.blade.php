@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title', 'Laporan SPP')
 @section('content')
 <div class="container mt-4">
 
@@ -30,7 +30,7 @@
                         @endforeach
                     </select>
                 </div>
-
+                
                 <div class="mb-3">
                     <label class="form-label">Tahun Dibayar</label>
                     <input type="number" name="tahun" class="form-control" placeholder="contoh: 2024">

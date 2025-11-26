@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title','CRUD Siswa')
 @section('content')
 <div class="container mt-4">
     <h3>Data Siswa</h3>
@@ -32,7 +32,7 @@
                 <td>{{ $s->nama }}</td>
                 <td>{{ $s->kelas->nama_kelas }}</td>
                 <td>{{ $s->no_telp }}</td>
-                <td>{{ $s->spp->nominal }}</td>
+                <td>Rp. {{ number_format($s->spp->nominal) }}</td>
                 <td>
                     <a href="{{ route('admin.siswa.edit', $s->nisn) }}" class="btn btn-warning btn-sm">Edit</a>
 

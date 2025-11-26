@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title','Transaksi SPP')
 @section('content')
 <style>
 .bulan-grid {

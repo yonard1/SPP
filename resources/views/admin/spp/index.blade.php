@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title','CRUD SPP')
 @section('content')
 <div class="container mt-4">
 

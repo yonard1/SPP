@@ -53,11 +53,6 @@ class PetugasController extends Controller
             'nama_petugas' => 'required',
             'level' => 'required|in:admin,petugas'
         ]);
-
-        if (Auth::guard('admin')->id() == $petugas->id_petugas && $request->level != 'admin') {
-            return back()->with('error', 'Anda tidak dapat mengubah level akun Anda sendiri.');
-        }
-
         $data = $request->except('password');
 
         if ($request->filled('password')) {
@@ -72,11 +67,6 @@ class PetugasController extends Controller
     public function destroy($id)
     {
         $petugas = Petugas::findOrFail($id);
-
-        if (Auth::guard('admin')->id() == $petugas->id_petugas) {
-            return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
-        }
-
         $petugas->delete();
 
         return redirect()->route('admin.petugas.index')->with('success', 'Data petugas berhasil dihapus');

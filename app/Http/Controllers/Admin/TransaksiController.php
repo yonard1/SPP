@@ -70,7 +70,6 @@ class TransaksiController extends Controller
             'jumlah_bayar' => 'required|numeric|min:0'
         ]);
 
-        // Cek sudah bayar atau belum
         $cek = Pembayaran::where('nisn', $request->nisn)
             ->where('bulan_dibayar', $request->bulan_dibayar)
             ->where('tahun_dibayar', $request->tahun_dibayar)
@@ -110,12 +109,9 @@ class TransaksiController extends Controller
     {
         $search = $request->search;
         $tanggal = $request->tanggal;
-
-        // Subquery untuk ambil id_pembayaran terbaru per siswa
         $sub = Pembayaran::selectRaw('MAX(id_pembayaran) as id_pembayaran')
             ->groupBy('nisn');
 
-        // Query utama ambil data lengkap
         $pembayaran = Pembayaran::with(['siswa', 'petugas'])
             ->whereIn('id_pembayaran', $sub)
             ->when($search, function ($q) use ($search) {

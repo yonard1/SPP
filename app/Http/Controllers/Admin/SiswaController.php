@@ -26,7 +26,6 @@ class SiswaController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'nisn' => 'required|unique:siswas,nisn',
             'nis' => 'required|unique:siswas,nis',

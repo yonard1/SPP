@@ -291,7 +291,6 @@
 
     <!-- CONTENT -->
     <div class="content-wrapper">
-        <h2 class="page-title mb-3">@yield('title')</h2>
         <div>@yield('content')</div>
     </div>
 

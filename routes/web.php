@@ -82,6 +82,11 @@ Route::middleware('auth.admin')->prefix('admin')->name('admin.')->group(function
         Route::get('/kelas/pdf', [LaporanController::class, 'laporanPerKelasPdf'])
             ->name('per_kelas.pdf');
 
+        Route::get('/pembayaran', [LaporanController::class,'LaporanPembayaran'])
+        ->name('pembayaran.get');
+
+        Route::post('/pembayaran', [LaporanController::class, 'LaporanPembayaran'])
+        ->name('pembayaran');
     });
 });
 

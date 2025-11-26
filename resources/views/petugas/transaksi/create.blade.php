@@ -102,7 +102,7 @@ document.querySelectorAll('.btn-bayar').forEach(button => {
     button.addEventListener('click', function() {
         const bulan = this.getAttribute('data-bulan');
         const nominal = {{ $siswa->spp->nominal }};
-        
+
         if(confirm(`Konfirmasi pembayaran SPP bulan ${bulan}?\nJumlah: Rp ${nominal.toLocaleString('id-ID')}`)) {
             document.getElementById('bulan_dibayar').value = bulan;
             document.getElementById('formPembayaran').submit();

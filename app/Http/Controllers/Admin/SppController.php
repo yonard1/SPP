@@ -28,8 +28,7 @@ class SppController extends Controller
 
         $spp = Spp::create($request->all());
 
-        return redirect()->route('admin.spp.index', $spp->id_spp)
-                        ->with('success', 'Data SPP berhasil ditambahkan');
+        return redirect()->route('admin.spp.index', $spp->id_spp)->with('success', 'Data SPP berhasil ditambahkan');
     }
 
     public function edit($id_spp)

@@ -39,6 +39,7 @@
                                     <span class="badge bg-danger">✗ Belum Bayar</span>
                                 @endif
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>

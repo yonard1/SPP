@@ -141,49 +141,4 @@ class LaporanController extends Controller
         $pdf = PDF::loadView('admin.laporan.per_kelas_pdf', compact('kelas','data_siswa'));
         return $pdf->download("laporan-kelas-{$kelas->nama_kelas}.pdf");
     }
-
-    public function laporanTunggakan()
-    {
-        $siswa = Siswa::with(['kelas', 'spp', 'pembayaran'])->get();
-
-        $data_tunggakan = [];
-        foreach ($siswa as $s) {
-            $bulan_lunas = $s->pembayaran->count();
-            $bulan_belum = 12 - $bulan_lunas;
-
-            if ($bulan_belum > 0) {
-                $data_tunggakan[] = [
-                    'siswa' => $s,
-                    'bulan_lunas' => $bulan_lunas,
-                    'bulan_belum' => $bulan_belum,
-                    'total_tunggakan' => $bulan_belum * $s->spp->nominal
-                ];
-            }
-        }
-
-        return view('admin.laporan.tunggakan', compact('data_tunggakan'));
-    }
-
-    public function laporanTunggakanPdf()
-    {
-        $siswa = Siswa::with(['kelas', 'spp', 'pembayaran'])->get();
-
-        $data_tunggakan = [];
-        foreach ($siswa as $s) {
-            $bulan_lunas = $s->pembayaran->count();
-            $bulan_belum = 12 - $bulan_lunas;
-
-            if ($bulan_belum > 0) {
-                $data_tunggakan[] = [
-                    'siswa' => $s,
-                    'bulan_lunas' => $bulan_lunas,
-                    'bulan_belum' => $bulan_belum,
-                    'total_tunggakan' => $bulan_belum * $s->spp->nominal
-                ];
-            }
-        }
-
-        $pdf = PDF::loadView('admin.laporan.tunggakan_pdf', compact('data_tunggakan'));
-        return $pdf->download('laporan-tunggakan.pdf');
-    }
 }

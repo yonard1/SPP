@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Transaksi SPP')
 @section('content')
 <style>
 .bulan-grid {
@@ -11,9 +11,9 @@
 
 /* Bikin tabel lebih gede & tulisan lebih nyaman */
 .table-container {
-    max-width: 1200px; 
-    width: 100%; 
-    margin: auto; 
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
 }
 
 .table td, .table th {
@@ -40,7 +40,7 @@
 
 {{-- Tabel --}}
 <div class="table-responsive d-flex justify-content-center">
-    <div class="table-container"> 
+    <div class="table-container">
         <table class="table table-bordered table-striped table-hover table-sm">
             <thead class="table-dark">
                 <tr>

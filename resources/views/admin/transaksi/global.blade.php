@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'History Pembayaran')
 @section('content')
 <div class="container mt-4">
 

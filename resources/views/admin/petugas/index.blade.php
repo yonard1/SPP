@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'CRUD Petugas')
 @section('content')
 <div class="container mt-4">
     <h3>Data Petugas</h3>
@@ -29,16 +29,14 @@
                 <td>{{ ucfirst($p->level) }}</td>
                 <td>
                     <a href="{{ route('admin.petugas.edit', $p->id_petugas) }}" class="btn btn-warning btn-sm">Edit</a>
-                    @if(auth()->guard('petugas')->check() && auth()->guard('petugas')->user()->id_petugas != $p->id_petugas)
-                        <form action="{{ route('admin.petugas.destroy', $p->id_petugas) }}" 
-                            method="POST" class="d-inline">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-danger btn-sm" 
-                                    onclick="return confirm('Yakin mau hapus petugas ini?')">
-                                Hapus
-                            </button>
-                        </form>
-                    @endif
+                    <form action="{{ route('admin.petugas.destroy', $p->id_petugas) }}"
+                        method="POST" class="d-inline">
+                        @csrf @method('DELETE')
+                        <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin mau hapus petugas ini?')">
+                            Hapus
+                        </button>
+                    </form>
                 </td>
             </tr>
             @endforeach
