@@ -30,7 +30,7 @@ Sistem Informasi Pengelolaan Pembayaran SPP adalah aplikasi berbasis web yang di
 
 *   **Laravel Framework:** Framework PHP yang tangguh untuk membangun logika backend aplikasi.
 *   **Vite:** Asset bundler frontend modern untuk proses pengembangan yang cepat.
-*   **Bootstrap / Tailwind CSS:** Framework UI frontend untuk desain tata letak yang responsif dan bersih.
+*   **Bootstrap CSS:** Framework UI frontend untuk desain tata letak yang responsif dan bersih.
 *   **MySQL Database:** Menyimpan data aplikasi termasuk data siswa, pengguna, dan transaksi pembayaran.
 
 ---
