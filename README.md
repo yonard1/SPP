@@ -30,7 +30,7 @@ The School Payment Management System is a web application built with Laravel, de
 
 *   **Laravel Framework:** Robust PHP framework for building the backend logic.
 *   **Vite:** Modern frontend asset bundler for fast development.
-*   **Bootstrap / Tailwind CSS:** Frontend UI frameworks for responsive and clean layout design.
+*   **Bootstrap CSS:** Frontend UI frameworks for responsive and clean layout design.
 *   **MySQL Database:** Stores application data including students, users, and payment transactions.
 
 ---
