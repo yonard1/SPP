@@ -21,7 +21,7 @@ Sistem ini mendukung **Multi-auth** dengan beberapa hak akses:
 
 *   **Framework:** Laravel
 *   **Asset Bundler:** Vite
-*   **Frontend UI:** Bootstrap / Tailwind (sesuaikan)
+*   **Frontend UI:** Bootstrap
 *   **Database:** MySQL / MariaDB
 
 ---
