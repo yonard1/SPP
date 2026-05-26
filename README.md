@@ -25,12 +25,3 @@ Sistem ini mendukung **Multi-auth** dengan beberapa hak akses:
 *   **Database:** MySQL / MariaDB
 
 ---
-
-## ⚙️ Panduan Instalasi (Lokal)
-
-Ikuti langkah-langkah berikut untuk menjalankan projek di komputer lokal:
-
-### 1. Clone Repositori
-```bash
-git clone [https://github.com/yonard1/SPP.git](https://github.com/yonard1/SPP.git)
-cd SPP
